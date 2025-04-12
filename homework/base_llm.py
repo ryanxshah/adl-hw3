@@ -106,8 +106,10 @@ class BaseLLM:
                 )
                 for r in self.batched_generate(prompts[idx : idx + micro_batch_size], num_return_sequences, temperature)
             ]
-
-        raise NotImplementedError()
+        
+        self.tokenizer.padding_side = "left"
+        self.tokenizer(prompt, padding=True, return_tensors="pt")
+        
 
     def answer(self, *questions) -> list[float]:
         """
