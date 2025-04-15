@@ -9,29 +9,19 @@ class CoTModel(BaseLLM):
         """
 
         messages = [
-            {
-                "role": "system",
-                "content": "You're a helpful assistant that explains and answers unit conversions. Be concise, and give the final numeric answer inside <answer> tags."
-            },
-            {
-                "role": "user",
-                "content": "Convert 3 meters to feet."
-            },
-            {
-                "role": "assistant",
-                "content": "We know that 1 meter is approximately 3.281 feet. So 3 meters is 3 × 3.281 = 9.843 feet. <answer>9.843</answer>"
-            },
-            {
-                "role": "user",
-                "content": question
-            }
+            {"role": "system", "content": "You are a helpful assistant that performs unit conversions. Be concise and show reasoning."},
+            {"role": "user", "content": "How many feet are in 4 miles?"},
+            {"role": "assistant", "content": "1 mile = 5280 feet. 4 * 5280 = <answer>21120</answer>"},
+            {"role": "user", "content": question}
         ]
 
-        return self.tokenizer.apply_chat_template(
-            messages,
-            tokenize=False,
-            add_generation_prompt=True
+        prompt = self.tokenizer.apply_chat_template(
+        messages, 
+        tokenize=False, 
+        add_generation_prompt=True
         )
+    
+        return prompt
 
 
 def load() -> CoTModel:
