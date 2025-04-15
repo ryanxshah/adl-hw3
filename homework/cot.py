@@ -10,8 +10,16 @@ class CoTModel(BaseLLM):
 
         messages = [
             {"role": "system", "content": "You are a helpful assistant that performs unit conversions. Be concise and show reasoning."},
-            {"role": "user", "content": "How many feet are in 4 miles?"},
-            {"role": "assistant", "content": "1 mile = 5280 feet. 4 * 5280 = <answer>21120</answer>"},
+            
+            {"role": "user", "content": "How does 5 kg measure up in terms of gram?"},
+            {"role": "assistant", "content": "1 kg = 1000 grams. 5 * 1000 = <answer>5000.0</answer>"},
+
+            {"role": "user", "content": "How many in are there per 8 ft?"},
+            {"role": "assistant", "content": "1 ft = 12 in. 8 * 12 = <answer>96.0</answer>"},
+
+            {"role": "user", "content": "How many cm is 2 ft?"},
+            {"role": "assistant", "content": "1 ft = 30.48 cm. 2 * 30.48 = <answer>60.96</answer>"},
+
             {"role": "user", "content": question}
         ]
 

@@ -115,7 +115,7 @@ class BaseLLM:
 
         outputs = self.model.generate(
             **inputs,
-            max_new_tokens=50,
+            max_new_tokens=100,
             do_sample=do_sample,
             temperature=temperature,
             num_return_sequences=1,
