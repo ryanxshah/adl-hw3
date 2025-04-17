@@ -92,12 +92,12 @@ def train_model(
     model = base_llm.model
 
     from peft import get_peft_model, LoraConfig
-    from Transformers import TrainingArguments, Trainer
+    from transformers import TrainingArguments, Trainer
 
     config = LoraConfig(
-        task_type=TaskType.CAUSAL_LM,
         target_modules="all_linear",
         bias=None,
+        task_type=TaskType.CAUSAL_LM,
         r=8,
         lora_alpha=4*8 #4 or 5 * r
     )
