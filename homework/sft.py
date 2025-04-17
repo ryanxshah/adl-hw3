@@ -95,8 +95,8 @@ def train_model(
     from transformers import TrainingArguments, Trainer
 
     config = LoraConfig(
-        target_modules="all_linear",
-        bias=None,
+        target_modules="all-linear",
+        bias="none",
         task_type=TaskType.CAUSAL_LM,
         r=8,
         lora_alpha=4*8 #4 or 5 * r
@@ -113,7 +113,7 @@ def train_model(
         per_device_train_batch_size=32,
         num_train_epochs=5,
         gradient_checkpointing=True,
-        learning_rate=2e-4,
+        learning_rate=5e-5,
         logging_dir=output_dir,
         report_to="tensorboard"
     )
