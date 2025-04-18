@@ -4,7 +4,8 @@ import json
 import random
 from tqdm import tqdm
 from .data import Dataset  # or however your questions are loaded
-from .base_llm import CoTModel
+from .cot import CoTModel
+from .base_llm import BaseLLM
 
 def extract_answer(text: str) -> float | None:
     """Extract the float value from <answer>...</answer>."""
@@ -18,30 +19,34 @@ def extract_answer(text: str) -> float | None:
     return None
 
 def generate_dataset(path: str = "data/rft.json", num_return_sequences: int = 10):
-    model = CoTModel(model_name="HuggingFaceTB/SmolLM2-1.7B-Instruct")
+    model = BaseLLM()
+
     questions = Dataset("train")
     dataset = []
 
     for question, gt_answer in tqdm(questions):
-        generations = model.batched_generate(
-            [question],
-            num_return_sequences=num_return_sequences,
+        prompts = [model.format_prompt(question)] * num_return_sequences
+
+        generations_nested = model.batched_generate(
+            prompts,
+            num_return_sequences=1,
             temperature=0.7,
         )
+        generations = [g[0] if isinstance(g, list) else g for g in generations_nested]
 
-        # extract generations and filter
-        correct_samples = []
+        correct = []
         for gen in generations:
             pred = extract_answer(gen)
             if pred is not None and abs(pred - gt_answer) < 1e-3:
-                correct_samples.append(gen)
+                correct.append(gen)
 
-        if correct_samples:
-            reasoning = random.choice(correct_samples)
+        if correct:
+            reasoning = random.choice(correct)
             dataset.append([question, gt_answer, reasoning])
 
     with open(path, "w") as f:
         json.dump(dataset, f, indent=2)
+
 
 #def generate_dataset(output_json: str, oversample: int = 10, temperature: float = 0.6):
     #raise NotImplementedError()
