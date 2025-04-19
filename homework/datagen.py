@@ -7,8 +7,9 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
     trainset = Dataset("train")
     cot_model = CoTModel()
 
+    prompts = ...
 
-    cot_model.batched_generate(prompts=trainset, num_return_sequences=oversample, temperature=temperature)
+
 
 
 if __name__ == "__main__":

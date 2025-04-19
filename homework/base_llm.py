@@ -118,7 +118,8 @@ class BaseLLM:
             max_new_tokens=100,
             do_sample=do_sample,
             temperature=temperature,
-            num_return_sequences=1,
+            # Changed this line from just 1
+            num_return_sequences=num_return_sequences or 1,
             eos_token_id=self.tokenizer.eos_token_id
         )
 
