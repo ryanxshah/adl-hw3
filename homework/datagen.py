@@ -27,24 +27,28 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
 
     output = []
 
-    for question, target in tqdm(trainset):
+    for question, target in trainset:
         prompt = model.format_prompt(question)
         generations = model.batched_generate(
-            prompt,
+            [prompt],
             num_return_sequences=oversample,
             temperature=temperature
         )
-
-        for generation in generations:
-            answer = model.parse_answer(generation)
-            # need to round?
-            if is_correct(answer, target):
+        
+        for generation in generations[0]:
+            #print(model.parse_answer(generation))
+            # model.parse_answer(generation) <- This is the predicted val
+            if is_correct(model.parse_answer(generation), target):
                 output.append([question, target, generation])
                 break
+
+    #from google.colab import files
 
     # check this later
     with open(output_json, "w") as f:
         json.dump(output, f, indent=2)
+        
+    #files.download(output_json)
 
 
 
