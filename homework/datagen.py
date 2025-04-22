@@ -11,52 +11,31 @@ def is_correct(pred: float, target: float, tol: float = 1e-2) -> bool:
 def generate_dataset(output_json: str, oversample: int = 10, temperature: float = 0.6):
     #raise NotImplementedError()
 
-    trainset = Dataset("train")
+    trainset = Dataset("debug")
     model = CoTModel()
-
-    """
-    # a list of all the questions as strings
-    questions = [trainset[i][0] for i in range(len(trainset))]
-
-    # a list of the formatted prompts (1 per question)
-    prompts = [model.format_prompt(question) for question in questions]
-
-    # a list of lists - each sublist is all the generations for an individual question
-    generations = model.batched_generate(prompts, num_return_sequences=oversample, temperature=temperature)
-    """
 
     output = []
 
-    for question, target in trainset:
-        prompt = model.format_prompt(question)
-        generations = model.batched_generate(
-            [prompt],
-            num_return_sequences=oversample,
-            temperature=temperature
-        )
-        
-        for generation in generations[0]:
-            #print(model.parse_answer(generation))
-            # model.parse_answer(generation) <- This is the predicted val
+    questions = [trainset[i][0] for i in range(len(trainset))]
+    targets = [trainset[i][1] for i in range(len(trainset))]
+    prompts = [model.format_prompt(question) for question in questions]
+
+    generations = model.batched_generate(
+        prompts,
+        num_return_sequences=oversample,
+        temperature=temperature
+    )
+
+    for question, target, q_generations in zip(questions, targets, generations):
+        for generation in q_generations:
             if is_correct(model.parse_answer(generation), target):
                 output.append([question, target, generation])
                 break
-
-    #from google.colab import files
 
     # check this later
     with open(output_json, "w") as f:
         json.dump(output, f, indent=2)
         
-    #files.download(output_json)
-
-
-
-
-
-
-
-
 
 if __name__ == "__main__":
     from fire import Fire
