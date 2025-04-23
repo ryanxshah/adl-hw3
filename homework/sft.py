@@ -1,7 +1,7 @@
-from peft.utils.peft_types import TaskType
 from .base_llm import BaseLLM
 from .data import Dataset, benchmark
-
+from peft import get_peft_model, LoraConfig
+from transformers import TrainingArguments, Trainer
 
 def load() -> BaseLLM:
     from pathlib import Path
@@ -50,13 +50,11 @@ def format_example(prompt: str, answer: str) -> dict[str, str]:
     """
     Construct a question / answer pair. Consider rounding the answer to make it easier for the LLM.
     """
-    #raise NotImplementedError()
     rounded_answer = round(float(answer), 2)
     return {
         "question": prompt,
         "answer": f"<answer>{rounded_answer}</answer>"
     }
-
 
 class TokenizedDataset:
     def __init__(self, tokenizer, data: Dataset, format_fn):
@@ -84,15 +82,11 @@ def train_model(
     output_dir: str,
     **kwargs,
 ):
-    #raise NotImplementedError()
-    #test_model(output_dir)
-
     base_llm = BaseLLM()
     tokenizer = base_llm.tokenizer
     model = base_llm.model
 
-    from peft import get_peft_model, LoraConfig
-    from transformers import TrainingArguments, Trainer
+    
 
     config = LoraConfig(
         target_modules="all-linear",
@@ -125,9 +119,9 @@ def train_model(
     )
 
     trainer.train()
+    trainer.save_model(output_dir)
 
-    # 6. Save the LoRA adapter
-    trainer.save_model("homework/sft_model")
+    test_model(output_dir)
 
 
 def test_model(ckpt_path: str):
