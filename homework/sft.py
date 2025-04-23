@@ -1,6 +1,7 @@
 from .base_llm import BaseLLM
 from .data import Dataset, benchmark
 from peft import get_peft_model, LoraConfig
+from peft.utils.peft_types import TaskType
 from transformers import TrainingArguments, Trainer
 
 def load() -> BaseLLM:
