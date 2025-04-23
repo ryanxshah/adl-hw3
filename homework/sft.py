@@ -20,7 +20,6 @@ def load() -> BaseLLM:
 
     return llm
 
-
 def tokenize(tokenizer, question: str, answer: str):
     """
     Tokenize a data element.
@@ -47,7 +46,6 @@ def tokenize(tokenizer, question: str, answer: str):
 
     full["labels"] = labels
     return full
-
 
 def format_example(prompt: str, answer: str) -> dict[str, str]:
     """

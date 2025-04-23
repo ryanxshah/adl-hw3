@@ -33,7 +33,6 @@ class CoTModel(BaseLLM):
     
         return prompt
 
-
 def load() -> CoTModel:
     return CoTModel()
 

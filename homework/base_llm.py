@@ -9,7 +9,6 @@ checkpoint = "HuggingFaceTB/SmolLM2-360M-Instruct"
 
 device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 
-
 class BaseLLM:
     def __init__(self, checkpoint=checkpoint):
         self.tokenizer = AutoTokenizer.from_pretrained(checkpoint)
@@ -149,7 +148,6 @@ class BaseLLM:
         prompts = [self.format_prompt(q) for q in questions]
         generations = self.batched_generate(prompts)
         return [self.parse_answer(g) for g in generations]
-
 
 def test_model():
     # The following code simply tests of the BaseLLM is able to complete text.
