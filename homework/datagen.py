@@ -12,8 +12,8 @@ def is_correct(pred: float, target: float, tol: float = 1e-2) -> bool:
 
 def generate_dataset(output_json: str, oversample: int = 10, temperature: float = 0.6):
 
-    trainset = Dataset("debug")
-    model = CoTModel()
+    trainset = Dataset("train")
+    model = CoTModel("HuggingFaceTB/SmolLM2-1.7B-Instruct")
 
     output = []
 
