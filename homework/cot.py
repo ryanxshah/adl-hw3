@@ -1,3 +1,5 @@
+# Used gen AI to help with parts of this file.
+
 from .base_llm import BaseLLM
 
 
@@ -24,17 +26,16 @@ class CoTModel(BaseLLM):
         ]
 
         prompt = self.tokenizer.apply_chat_template(
-        messages, 
-        tokenize=False, 
-        add_generation_prompt=True
-        )
+            messages, 
+            tokenize=False, 
+            add_generation_prompt=True
+            )
     
         return prompt
 
 
 def load() -> CoTModel:
     return CoTModel()
-
 
 def test_model():
     from .data import Dataset, benchmark

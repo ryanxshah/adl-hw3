@@ -1,3 +1,5 @@
+# Used gen AI to help with parts of this file.
+
 from typing import overload
 
 import torch
@@ -118,7 +120,6 @@ class BaseLLM:
             max_new_tokens=100,
             do_sample=do_sample,
             temperature=temperature,
-            # Changed this line from just 1
             num_return_sequences=num_return_sequences or 1,
             eos_token_id=self.tokenizer.eos_token_id
         )
@@ -133,14 +134,12 @@ class BaseLLM:
         if num_return_sequences is None or num_return_sequences == 1:
             return decoded
         else:
-            # Group into sublists of length `num_return_sequences`
+            # Group into sublists of length num_return_sequences
             return [
                 decoded[i * num_return_sequences:(i + 1) * num_return_sequences]
                 for i in range(len(prompts))
             ]
 
-
-        
 
     def answer(self, *questions) -> list[float]:
         """

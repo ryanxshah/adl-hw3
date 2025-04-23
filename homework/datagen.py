@@ -1,15 +1,16 @@
+# Used gen AI to help with parts of this file.
+
 from .cot import CoTModel
 from .data import Dataset
 import math
 import json
 from tqdm import tqdm
 
-# black box this for now
+
 def is_correct(pred: float, target: float, tol: float = 1e-2) -> bool:
     return math.isfinite(pred) and abs(pred - target) <= tol
 
 def generate_dataset(output_json: str, oversample: int = 10, temperature: float = 0.6):
-    #raise NotImplementedError()
 
     trainset = Dataset("debug")
     model = CoTModel()
@@ -32,7 +33,6 @@ def generate_dataset(output_json: str, oversample: int = 10, temperature: float 
                 output.append([question, target, generation])
                 break
 
-    # check this later
     with open(output_json, "w") as f:
         json.dump(output, f, indent=2)
         
